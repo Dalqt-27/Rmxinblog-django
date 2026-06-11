@@ -1,0 +1,38 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block contenido %}
+<section class="pagina-interior">
+
+    <div class="seccion-cabecera">
+        <h1 class="seccion-titulo">Acerca de <span class="texto-acento">TechBlog</span></h1>
+        <p class="seccion-subtitulo">Conoce más sobre este proyecto y su propósito</p>
+    </div>
+
+    <div class="grilla-acerca">
+
+        <div class="tarjeta-info">
+            <span class="tarjeta-icono-grande" aria-hidden="true"><i class="fas fa-rocket"></i></span>
+            <h2>¿Qué es TechBlog?</h2>
+            <p>TechBlog es una plataforma dedicada a compartir contenido sobre tecnología, gaming y desarrollo de software.
+                Nuestro objetivo es crear una comunidad de entusiastas del mundo digital donde las ideas fluyan libremente.</p>
+        </div>
+
+        <div class="tarjeta-info">
+            <span class="tarjeta-icono-grande" aria-hidden="true"><i class="fas fa-code"></i></span>
+            <h2>Tecnologías usadas</h2>
+            <p>Este proyecto está construido con <strong>Python</strong> y <strong>Django</strong> para el backend,
+                junto con HTML semántico, CSS moderno y JavaScript para el frontend. Próximamente contará con
+                autenticación completa y base de datos.</p>
+        </div>
+
+        <div class="tarjeta-info">
+            <span class="tarjeta-icono-grande" aria-hidden="true"><i class="fas fa-users"></i></span>
+            <h2>La comunidad</h2>
+            <p>Cualquier persona puede registrarse y leer contenido. Los <strong>administradores</strong> cuentan con
+                acceso completo para gestionar posts, usuarios y todo el contenido de la plataforma de forma segura.</p>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

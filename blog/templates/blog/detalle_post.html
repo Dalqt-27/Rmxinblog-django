@@ -1,0 +1,107 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block contenido %}
+<article class="pagina-detalle" itemscope itemtype="https://schema.org/Article">
+
+    <!-- Migas de pan -->
+    <nav class="breadcrumb" aria-label="Migas de pan">
+        <a href="{% url 'blog-home' %}">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <button class="breadcrumb-btn-cat" data-categoria="{{ post.categoria }}">
+            {{ post.categoria }}
+        </button>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">{{ post.titulo|truncatechars:55 }}</span>
+    </nav>
+
+    <!-- Cabecera del artículo -->
+    <header class="detalle-cabecera">
+        <div class="detalle-meta-top">
+            <span class="tarjeta-categoria">{{ post.categoria }}</span>
+            <time class="tarjeta-fecha" datetime="{{ post.fecha }}" itemprop="datePublished">
+                <i class="far fa-calendar-alt" aria-hidden="true"></i>
+                {{ post.fecha_display }}
+            </time>
+            <span class="detalle-tiempo">
+                <i class="far fa-clock" aria-hidden="true"></i>
+                {{ post.tiempo_lectura }} de lectura
+            </span>
+        </div>
+
+        <h1 class="detalle-titulo" itemprop="headline">{{ post.titulo }}</h1>
+
+        <p class="detalle-extracto">{{ post.extracto }}</p>
+
+        <div class="detalle-autor-linea" itemprop="author" itemscope itemtype="https://schema.org/Person">
+            <div class="avatar-autor avatar-autor-md" aria-hidden="true">{{ post.autor|first|upper }}</div>
+            <div>
+                <strong class="detalle-autor-nombre" itemprop="name">{{ post.autor }}</strong>
+                <span class="detalle-autor-rol">Redactor TechBlog</span>
+            </div>
+        </div>
+    </header>
+
+    <hr class="detalle-separador">
+
+    <!-- Cuerpo del artículo -->
+    <div class="detalle-contenido" itemprop="articleBody">
+        {{ post.contenido|safe }}
+    </div>
+
+    <hr class="detalle-separador">
+
+    <!-- Navegación inferior -->
+    <div class="detalle-navegacion">
+        <a href="{% url 'blog-home' %}" class="btn btn-secundario">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i> Volver a los posts
+        </a>
+        <button class="btn btn-secundario" data-categoria="{{ post.categoria }}"
+                onclick="filtrarCategoria(this.dataset.categoria)">
+            Más de {{ post.categoria }} <i class="fas fa-filter" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- Posts relacionados -->
+    {% if relacionados %}
+    <section class="seccion-relacionados" aria-label="Posts relacionados">
+        <div class="seccion-cabecera">
+            <h2 class="seccion-titulo">También te puede <span class="texto-acento">interesar</span></h2>
+        </div>
+        <div class="grilla-posts">
+            {% for rel in relacionados %}
+            <article class="tarjeta-post">
+                <div class="tarjeta-cabecera">
+                    <span class="tarjeta-categoria">{{ rel.categoria }}</span>
+                    <time class="tarjeta-fecha" datetime="{{ rel.fecha }}">
+                        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+                        {{ rel.fecha_display }}
+                    </time>
+                </div>
+                <div class="tarjeta-cuerpo">
+                    <h3 class="tarjeta-titulo">{{ rel.titulo }}</h3>
+                    <p class="tarjeta-extracto">{{ rel.extracto }}</p>
+                </div>
+                <div class="tarjeta-pie">
+                    <div class="tarjeta-autor">
+                        <div class="avatar-autor" aria-hidden="true">{{ rel.autor|first|upper }}</div>
+                        <div>
+                            <span>{{ rel.autor }}</span>
+                            <span class="tarjeta-tiempo">
+                                <i class="far fa-clock" aria-hidden="true"></i> {{ rel.tiempo_lectura }}
+                            </span>
+                        </div>
+                    </div>
+                    <a href="{% url 'blog-detalle' rel.slug %}" class="btn-leer-mas"
+                        aria-label="Leer: {{ rel.titulo }}">
+                        Leer más <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+</article>
+{% endblock %}

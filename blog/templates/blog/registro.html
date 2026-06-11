@@ -1,0 +1,64 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block contenido %}
+<section class="pagina-acceso">
+    <div class="formulario-acceso-contenedor">
+
+        <div class="formulario-acceso-cabecera">
+            <i class="fas fa-user-plus acceso-icono" aria-hidden="true"></i>
+            <h1>Crear cuenta</h1>
+            <p>Únete a la comunidad TechBlog</p>
+        </div>
+
+        <form class="formulario-acceso" method="POST" action="#" novalidate>
+            {% csrf_token %}
+
+            <div class="grupo-campo">
+                <label for="nombre_usuario">Nombre de usuario</label>
+                <div class="input-icono">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                    <input type="text" id="nombre_usuario" name="nombre_usuario"
+                        placeholder="nombre_usuario" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="email_registro">Correo electrónico</label>
+                <div class="input-icono">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    <input type="email" id="email_registro" name="email"
+                        placeholder="tu@correo.com" required autocomplete="email">
+                </div>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="contrasena">Contraseña</label>
+                <div class="input-icono">
+                    <i class="fas fa-lock" aria-hidden="true"></i>
+                    <input type="password" id="contrasena" name="contrasena"
+                        placeholder="Mínimo 8 caracteres" required autocomplete="new-password">
+                </div>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="confirmar_contrasena">Confirmar contraseña</label>
+                <div class="input-icono">
+                    <i class="fas fa-lock" aria-hidden="true"></i>
+                    <input type="password" id="confirmar_contrasena" name="confirmar_contrasena"
+                        placeholder="Repite tu contraseña" required autocomplete="new-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primario btn-bloque">
+                <i class="fas fa-user-plus" aria-hidden="true"></i> Crear cuenta
+            </button>
+        </form>
+
+        <p class="texto-acceso-alternativo">
+            ¿Ya tienes cuenta? <a href="{% url 'blog-login' %}">Inicia sesión aquí</a>
+        </p>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block contenido %}
+<section class="pagina-acceso">
+    <div class="formulario-acceso-contenedor">
+
+        <div class="formulario-acceso-cabecera">
+            <i class="fas fa-sign-in-alt acceso-icono" aria-hidden="true"></i>
+            <h1>Iniciar Sesión</h1>
+            <p>Bienvenido de vuelta</p>
+        </div>
+
+        <form class="formulario-acceso" method="POST" action="#" novalidate>
+            {% csrf_token %}
+
+            <div class="grupo-campo">
+                <label for="usuario">Usuario o correo electrónico</label>
+                <div class="input-icono">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                    <input type="text" id="usuario" name="usuario"
+                        placeholder="nombre_usuario" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="contrasena_login">Contraseña</label>
+                <div class="input-icono">
+                    <i class="fas fa-lock" aria-hidden="true"></i>
+                    <input type="password" id="contrasena_login" name="contrasena"
+                        placeholder="••••••••" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <div class="recordar-contrasena">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="recordar"> Recordarme
+                </label>
+                <a href="#" class="enlace-olvido">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primario btn-bloque">
+                <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión
+            </button>
+        </form>
+
+        <p class="texto-acceso-alternativo">
+            ¿No tienes cuenta? <a href="{% url 'blog-registro' %}">Regístrate gratis</a>
+        </p>
+
+        <!-- Separador acceso administrador -->
+        <div class="separador-admin" aria-hidden="true">
+            <span>Acceso administrador</span>
+        </div>
+
+        <a href="/admin/" class="btn btn-secundario btn-bloque btn-admin" rel="nofollow">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i> Panel de Administrador
+        </a>
+
+    </div>
+</section>
+{% endblock %}

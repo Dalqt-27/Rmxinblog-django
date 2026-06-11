@@ -1,0 +1,138 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block contenido %}
+
+<!-- Hero -->
+<section class="hero" aria-label="Bienvenida">
+    <div class="hero-contenido">
+        <div class="hero-etiqueta" aria-hidden="true">🚀 Bienvenido a TechBlog</div>
+        <h1 class="hero-titulo">
+            Explora el mundo <span class="texto-acento">tech y gaming</span>
+        </h1>
+        <p class="hero-descripcion">
+            Noticias, tutoriales y opiniones sobre tecnología, videojuegos y desarrollo.
+            Escrito por apasionados para apasionados.
+        </p>
+        <div class="hero-botones">
+            <a href="#posts" class="btn btn-primario btn-grande">
+                <i class="fas fa-newspaper" aria-hidden="true"></i> Ver Posts
+            </a>
+            <a href="{% url 'blog-acerca' %}" class="btn btn-secundario btn-grande">Saber más</a>
+        </div>
+    </div>
+    <div class="hero-decoracion" aria-hidden="true">
+        <div class="hero-circulo"></div>
+        <div class="hero-icono-grande"><i class="fas fa-microchip"></i></div>
+    </div>
+</section>
+
+<!-- Sección de Posts -->
+<section class="seccion-posts" id="posts" aria-label="Posts recientes">
+
+    <div class="seccion-cabecera">
+        <h2 class="seccion-titulo">Posts <span class="texto-acento">Recientes</span></h2>
+        <p class="seccion-subtitulo">Las últimas novedades del blog</p>
+    </div>
+
+    <!-- Barra de filtros -->
+    <div class="barra-filtros">
+        <div class="filtros-categoria" role="group" aria-label="Filtrar por categoría">
+            <button class="btn-filtro {% if not categoria_activa %}activo{% endif %}"
+                    data-categoria=""
+                    aria-pressed="{% if not categoria_activa %}true{% else %}false{% endif %}">
+                Todas
+                <span class="filtro-count">({{ total_posts }})</span>
+            </button>
+            {% for cat in categorias %}
+            <button class="btn-filtro {% if categoria_activa == cat %}activo{% endif %}"
+                    data-categoria="{{ cat }}"
+                    aria-pressed="{% if categoria_activa == cat %}true{% else %}false{% endif %}">
+                {{ cat }}
+            </button>
+            {% endfor %}
+        </div>
+
+        <div class="filtro-orden">
+            <label for="selectOrden" class="sr-only">Ordenar posts</label>
+            <select id="selectOrden" class="select-orden"
+                    onchange="ordenarPosts(this.value)"
+                    aria-label="Ordenar posts por fecha">
+                <option value="reciente" {% if orden_activo != 'antiguo' %}selected{% endif %}>
+                    🕐 Más reciente
+                </option>
+                <option value="antiguo" {% if orden_activo == 'antiguo' %}selected{% endif %}>
+                    🕓 Más antiguo
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Feedback de búsqueda / filtros activos -->
+    {% if query or categoria_activa %}
+    <div class="info-busqueda" role="status" aria-live="polite">
+        <p>
+            {% if total_resultados == 0 %}
+                Sin resultados
+            {% elif total_resultados == 1 %}
+                <strong>1</strong> resultado
+            {% else %}
+                <strong>{{ total_resultados }}</strong> resultados
+            {% endif %}
+            {% if query %} para "<strong>{{ query }}</strong>"{% endif %}
+            {% if categoria_activa %} en <strong>{{ categoria_activa }}</strong>{% endif %}
+        </p>
+        <a href="{% url 'blog-home' %}">
+            <i class="fas fa-times" aria-hidden="true"></i> Limpiar filtros
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Grilla de posts -->
+    <div class="grilla-posts">
+        {% for post in posts %}
+        <article class="tarjeta-post" itemscope itemtype="https://schema.org/Article">
+            <div class="tarjeta-cabecera">
+                <span class="tarjeta-categoria" itemprop="articleSection">{{ post.categoria }}</span>
+                <time class="tarjeta-fecha" datetime="{{ post.fecha }}" itemprop="datePublished">
+                    <i class="far fa-calendar-alt" aria-hidden="true"></i>
+                    {{ post.fecha_display }}
+                </time>
+            </div>
+            <div class="tarjeta-cuerpo">
+                <h3 class="tarjeta-titulo" itemprop="headline">{{ post.titulo }}</h3>
+                <p class="tarjeta-extracto" itemprop="description">{{ post.extracto }}</p>
+            </div>
+            <div class="tarjeta-pie">
+                <div class="tarjeta-autor" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <div class="avatar-autor" aria-hidden="true">{{ post.autor|first|upper }}</div>
+                    <div>
+                        <span itemprop="name">{{ post.autor }}</span>
+                        <span class="tarjeta-tiempo">
+                            <i class="far fa-clock" aria-hidden="true"></i> {{ post.tiempo_lectura }}
+                        </span>
+                    </div>
+                </div>
+                <a href="{% url 'blog-detalle' post.slug %}" class="btn-leer-mas"
+                    aria-label="Leer el artículo completo: {{ post.titulo }}">
+                    Leer más <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </article>
+        {% empty %}
+        <div class="sin-resultados" role="status">
+            <i class="fas fa-{% if query or categoria_activa %}search{% else %}inbox{% endif %}" aria-hidden="true"></i>
+            {% if query or categoria_activa %}
+                <p>No se encontraron posts con los filtros aplicados.</p>
+                <a href="{% url 'blog-home' %}" class="btn btn-secundario" style="margin-top:16px">
+                    Ver todos los posts
+                </a>
+            {% else %}
+                <p>No hay posts disponibles aún. ¡Vuelve pronto!</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}
